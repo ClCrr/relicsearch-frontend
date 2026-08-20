@@ -1,1 +1,65 @@
-<p>dashboard works!</p>
+<!-- Barra de navegación -->
+<mat-toolbar color="primary">
+  <span>RelicSearch Dashboard</span>
+  <span class="spacer"></span>
+  <button mat-icon-button (click)="logout()" title="Cerrar sesión">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
+<!-- Contenido principal -->
+<div class="dashboard-container">
+  <div class="header-actions">
+    <h2>Gestión de Reliquias</h2>
+    <!-- Conectamos el botón para crear una NUEVA reliquia -->
+    <button mat-raised-button color="accent" (click)="abrirFormulario()">
+      <mat-icon>add</mat-icon> Nueva Reliquia
+    </button>
+  </div>
+
+  <!-- Tabla de datos -->
+  <table mat-table [dataSource]="reliquias" class="mat-elevation-z8">
+
+    <!-- Columna ID -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let reliquia"> {{reliquia.id}} </td>
+    </ng-container>
+
+    <!-- Columna Nombre -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let reliquia"> {{reliquia.nombre}} </td>
+    </ng-container>
+
+    <!-- Columna Descripción -->
+    <ng-container matColumnDef="descripcion">
+      <th mat-header-cell *matHeaderCellDef> Descripción </th>
+      <td mat-cell *matCellDef="let reliquia"> 
+        {{ (reliquia.descripcion?.length > 50) ? (reliquia.descripcion | slice:0:50) + '...' : reliquia.descripcion }} 
+      </td>
+    </ng-container>
+
+    <!-- Columna Acciones -->
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef class="actions-header"> Acciones </th>
+      <td mat-cell *matCellDef="let reliquia" class="actions-cell">
+        <!-- Conectamos el botón para EDITAR enviando la reliquia actual -->
+        <button mat-icon-button color="primary" title="Editar" (click)="abrirFormulario(reliquia)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="eliminar(reliquia.id)" title="Eliminar">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <!-- Mensaje si no hay datos -->
+  <div *ngIf="reliquias.length === 0" class="empty-state">
+    <p>No hay reliquias registradas. ¡Agrega la primera!</p>
+  </div>
+</div>

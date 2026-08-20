@@ -1,4 +1,5 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -9,6 +10,7 @@ import { LoginRequest, RegisterRequest, AuthResponse } from '../../models/auth.i
 })
 export class AuthService {
   private readonly http = inject(HttpClient);
+  private readonly platformId = inject(PLATFORM_ID); // <-- Inyección del ID de plataforma
   private readonly apiUrl = `${environment.apiUrl}/auth`;
   
   // Mantiene el estado de si el usuario está logueado para actualizar la UI
@@ -28,12 +30,17 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('jwt_token');
+    if (isPlatformBrowser(this.platformId)) { // <-- Verificación de navegador
+      localStorage.removeItem('jwt_token');
+    }
     this.isLoggedIn.next(false);
   }
 
   getToken(): string | null {
-    return localStorage.getItem('jwt_token');
+    if (isPlatformBrowser(this.platformId)) { // <-- Verificación de navegador
+      return localStorage.getItem('jwt_token');
+    }
+    return null; // En el servidor (SSR) retorna null
   }
 
   isAuthenticated(): boolean {
@@ -41,11 +48,16 @@ export class AuthService {
   }
 
   private hasToken(): boolean {
-    return !!localStorage.getItem('jwt_token');
+    if (isPlatformBrowser(this.platformId)) { // <-- Verificación de navegador
+      return !!localStorage.getItem('jwt_token');
+    }
+    return false; // En el servidor (SSR) se asume falso
   }
 
   private saveToken(token: string): void {
-    localStorage.setItem('jwt_token', token);
+    if (isPlatformBrowser(this.platformId)) { // <-- Verificación de navegador
+      localStorage.setItem('jwt_token', token);
+    }
     this.isLoggedIn.next(true);
   }
 }
