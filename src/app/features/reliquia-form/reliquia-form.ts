@@ -28,10 +28,7 @@ export class ReliquiaFormComponent implements OnInit {
 
   form = this.fb.group({
     id: [null as number | null],
-    nombre: ['', Validators.required],
-    descripcion: ['', Validators.required],
-    historia: [''],
-    imageUrl: ['']
+    nombre: ['', Validators.required]
   });
 
   ngOnInit(): void {
