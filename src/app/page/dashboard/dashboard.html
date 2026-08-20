@@ -7,7 +7,6 @@
     </div>
     <div class="tenno-user">
       <span class="status-text">OPERADOR CONECTADO</span>
-      <!-- Botón de Logout -->
       <button class="tenno-icon-btn logout-btn" (click)="logout()" title="Cerrar sesión">
         <mat-icon>logout</mat-icon>
       </button>
@@ -20,14 +19,13 @@
     <!-- Cabecera de Acciones -->
     <div class="tenno-actions-bar">
       <h2 class="tenno-section-title">// GESTIÓN DE RELIQUIAS</h2>
-      <!-- Botón Nueva Reliquia -->
       <button class="tenno-action-btn primary-btn" (click)="abrirFormulario()">
         <mat-icon>add</mat-icon> NUEVA RELIQUIA
       </button>
     </div>
 
-    <!-- Tabla Holográfica Tenno (Se muestra si hay datos) -->
-    <div class="tenno-table-container" *ngIf="reliquias.length > 0">
+    <!-- Tabla Holográfica Tenno (Verifica de forma segura si el arreglo existe y tiene datos) -->
+    <div class="tenno-table-container" *ngIf="reliquias && reliquias.length > 0">
       <table class="tenno-table">
         <thead>
           <tr>
@@ -38,19 +36,25 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Reemplazamos [dataSource] por un *ngFor clásico de Angular -->
           <tr *ngFor="let reliquia of reliquias" class="tenno-row">
             <td class="id-cell">{{ reliquia.id }}</td>
             <td class="highlight-text">{{ reliquia.nombre }}</td>
+            
+            <!-- Corrección: Manejo seguro de la descripción usando ngIf -->
             <td class="desc-cell">
-              {{ (reliquia.descripcion?.length > 50) ? (reliquia.descripcion | slice:0:50) + '...' : reliquia.descripcion }} 
+              <ng-container *ngIf="reliquia.descripcion; else sinDesc">
+                {{ reliquia.descripcion | slice:0:50 }}{{ reliquia.descripcion.length > 50 ? '...' : '' }}
+              </ng-container>
+              <!-- Texto por si la reliquia no tiene descripción -->
+              <ng-template #sinDesc>
+                <span style="opacity: 0.5;">Sin descripción</span>
+              </ng-template>
             </td>
+
             <td class="actions-cell">
-              <!-- Botón Editar -->
               <button class="tenno-icon-btn edit-btn" title="Editar" (click)="abrirFormulario(reliquia)">
                 <mat-icon>edit</mat-icon>
               </button>
-              <!-- Botón Eliminar -->
               <button class="tenno-icon-btn delete-btn" title="Eliminar" (click)="eliminar(reliquia.id)">
                 <mat-icon>delete</mat-icon>
               </button>
@@ -60,8 +64,8 @@
       </table>
     </div>
 
-    <!-- Mensaje si no hay datos -->
-    <div *ngIf="reliquias.length === 0" class="tenno-empty-state">
+    <!-- Mensaje si no hay datos (Manejo seguro por si es nulo) -->
+    <div *ngIf="!reliquias || reliquias.length === 0" class="tenno-empty-state">
       <div class="empty-icon">⚠</div>
       <p>NO HAY RELIQUIAS REGISTRADAS EN LA BASE DE DATOS.</p>
       <p class="sub-text">Inicia una extracción en el Vacío para agregar la primera.</p>
