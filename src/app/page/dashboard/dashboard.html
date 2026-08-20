@@ -1,65 +1,71 @@
-<!-- Barra de navegación -->
-<mat-toolbar color="primary">
-  <span>RelicSearch Dashboard</span>
-  <span class="spacer"></span>
-  <button mat-icon-button (click)="logout()" title="Cerrar sesión">
-    <mat-icon>logout</mat-icon>
-  </button>
-</mat-toolbar>
+<div class="app-tenno-wrapper">
+  
+  <!-- Barra de Navegación del Orbiter -->
+  <header class="tenno-header">
+    <div class="tenno-brand">
+      <span class="lotus-icon">❖</span> RELICSEARCH NAV
+    </div>
+    <div class="tenno-user">
+      <span class="status-text">OPERADOR CONECTADO</span>
+      <!-- Botón de Logout -->
+      <button class="tenno-icon-btn logout-btn" (click)="logout()" title="Cerrar sesión">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </header>
 
-<!-- Contenido principal -->
-<div class="dashboard-container">
-  <div class="header-actions">
-    <h2>Gestión de Reliquias</h2>
-    <!-- Conectamos el botón para crear una NUEVA reliquia -->
-    <button mat-raised-button color="accent" (click)="abrirFormulario()">
-      <mat-icon>add</mat-icon> Nueva Reliquia
-    </button>
-  </div>
+  <!-- Contenido Principal -->
+  <main class="tenno-container">
+    
+    <!-- Cabecera de Acciones -->
+    <div class="tenno-actions-bar">
+      <h2 class="tenno-section-title">// GESTIÓN DE RELIQUIAS</h2>
+      <!-- Botón Nueva Reliquia -->
+      <button class="tenno-action-btn primary-btn" (click)="abrirFormulario()">
+        <mat-icon>add</mat-icon> NUEVA RELIQUIA
+      </button>
+    </div>
 
-  <!-- Tabla de datos -->
-  <table mat-table [dataSource]="reliquias" class="mat-elevation-z8">
+    <!-- Tabla Holográfica Tenno (Se muestra si hay datos) -->
+    <div class="tenno-table-container" *ngIf="reliquias.length > 0">
+      <table class="tenno-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>NOMBRE</th>
+            <th>DESCRIPCIÓN</th>
+            <th class="actions-col">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Reemplazamos [dataSource] por un *ngFor clásico de Angular -->
+          <tr *ngFor="let reliquia of reliquias" class="tenno-row">
+            <td class="id-cell">{{ reliquia.id }}</td>
+            <td class="highlight-text">{{ reliquia.nombre }}</td>
+            <td class="desc-cell">
+              {{ (reliquia.descripcion?.length > 50) ? (reliquia.descripcion | slice:0:50) + '...' : reliquia.descripcion }} 
+            </td>
+            <td class="actions-cell">
+              <!-- Botón Editar -->
+              <button class="tenno-icon-btn edit-btn" title="Editar" (click)="abrirFormulario(reliquia)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <!-- Botón Eliminar -->
+              <button class="tenno-icon-btn delete-btn" title="Eliminar" (click)="eliminar(reliquia.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <!-- Columna ID -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID </th>
-      <td mat-cell *matCellDef="let reliquia"> {{reliquia.id}} </td>
-    </ng-container>
+    <!-- Mensaje si no hay datos -->
+    <div *ngIf="reliquias.length === 0" class="tenno-empty-state">
+      <div class="empty-icon">⚠</div>
+      <p>NO HAY RELIQUIAS REGISTRADAS EN LA BASE DE DATOS.</p>
+      <p class="sub-text">Inicia una extracción en el Vacío para agregar la primera.</p>
+    </div>
 
-    <!-- Columna Nombre -->
-    <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef> Nombre </th>
-      <td mat-cell *matCellDef="let reliquia"> {{reliquia.nombre}} </td>
-    </ng-container>
-
-    <!-- Columna Descripción -->
-    <ng-container matColumnDef="descripcion">
-      <th mat-header-cell *matHeaderCellDef> Descripción </th>
-      <td mat-cell *matCellDef="let reliquia"> 
-        {{ (reliquia.descripcion?.length > 50) ? (reliquia.descripcion | slice:0:50) + '...' : reliquia.descripcion }} 
-      </td>
-    </ng-container>
-
-    <!-- Columna Acciones -->
-    <ng-container matColumnDef="acciones">
-      <th mat-header-cell *matHeaderCellDef class="actions-header"> Acciones </th>
-      <td mat-cell *matCellDef="let reliquia" class="actions-cell">
-        <!-- Conectamos el botón para EDITAR enviando la reliquia actual -->
-        <button mat-icon-button color="primary" title="Editar" (click)="abrirFormulario(reliquia)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="eliminar(reliquia.id)" title="Eliminar">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-
-  <!-- Mensaje si no hay datos -->
-  <div *ngIf="reliquias.length === 0" class="empty-state">
-    <p>No hay reliquias registradas. ¡Agrega la primera!</p>
-  </div>
+  </main>
 </div>
