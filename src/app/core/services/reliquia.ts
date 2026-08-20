@@ -11,7 +11,7 @@ export class ReliquiaService {
   private readonly http = inject(HttpClient);
   
   // Asegúrate de que este endpoint coincida con tu @RestController en Spring Boot
-  private readonly apiUrl = `${environment.apiUrl}/api/reliquias`;
+  private readonly apiUrl = `${environment.apiUrl}/relics`;
 
   // 1. Obtener todas las reliquias (GET)
   getReliquias(): Observable<Reliquia[]> {
