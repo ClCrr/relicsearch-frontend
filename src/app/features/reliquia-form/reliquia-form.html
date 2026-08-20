@@ -9,22 +9,6 @@
       <mat-error *ngIf="form.get('nombre')?.hasError('required')">El nombre es obligatorio</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Descripción breve</mat-label>
-      <textarea matInput formControlName="descripcion" rows="3"></textarea>
-      <mat-error *ngIf="form.get('descripcion')?.hasError('required')">La descripción es obligatoria</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Historia (Opcional)</mat-label>
-      <textarea matInput formControlName="historia" rows="3"></textarea>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>URL de la imagen (Opcional)</mat-label>
-      <input matInput formControlName="imageUrl" placeholder="https://...">
-    </mat-form-field>
-
   </form>
 </mat-dialog-content>
 
