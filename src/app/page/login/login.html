@@ -1,49 +1,56 @@
-<div class="login-container">
-  <mat-card class="login-card">
-    <mat-card-header>
-      <mat-card-title>Acceso al Sistema (SaaS AI)</mat-card-title>
-    </mat-card-header>
+<div class="app-orokin-container">
+  <div class="app-orokin-card">
     
-    <!-- 1. Envolvemos el contenido en un tag <form> con [formGroup] -->
+    <!-- Encabezado Temático -->
+    <h1 class="app-orokin-title">REGISTRO OROKIN</h1>
+    <p class="app-orokin-subtitle">Ingresa tus credenciales para acceder al Vacío</p>
+
+    <!-- 1. Conservamos tu formGroup y ngSubmit -->
     <form [formGroup]="loginForm" (ngSubmit)="ingresarSistema()">
       
-      <mat-card-content class="form-content">
-        
-        <!-- Campo Correo -->
-        <mat-form-field appearance="outline">
-          <mat-label>Correo electrónico</mat-label>
-          <!-- 2. Agregamos formControlName="email" -->
-          <input matInput formControlName="email" type="email" placeholder="ejemplo@univo.edu">
-          <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
-            El correo es obligatorio
-          </mat-error>
-          <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
-            Ingresa un correo electrónico válido
-          </mat-error>
-        </mat-form-field>
+      <!-- Campo Correo -->
+      <div class="app-orokin-form-group">
+        <!-- 2. Conservamos formControlName -->
+        <input 
+          class="app-orokin-input" 
+          formControlName="email" 
+          type="email" 
+          placeholder="OPERADOR@CORREO.COM">
+          
+        <!-- Validaciones de Correo -->
+        <div class="app-orokin-error" *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched">
+          El correo es obligatorio
+        </div>
+        <div class="app-orokin-error" *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">
+          Ingresa un correo electrónico válido
+        </div>
+      </div>
 
-        <!-- Campo Contraseña -->
-        <mat-form-field appearance="outline">
-          <mat-label>Contraseña</mat-label>
-          <!-- 3. Agregamos formControlName="password" -->
-          <input matInput formControlName="password" type="password">
-          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-            La contraseña es obligatoria
-          </mat-error>
-        </mat-form-field>
+      <!-- Campo Contraseña -->
+      <div class="app-orokin-form-group">
+        <!-- 3. Conservamos formControlName -->
+        <input 
+          class="app-orokin-input" 
+          formControlName="password" 
+          type="password"
+          placeholder="CONTRASEÑA">
+          
+        <!-- Validaciones de Contraseña -->
+        <div class="app-orokin-error" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+          La contraseña es obligatoria
+        </div>
+      </div>
 
-        <!-- Mensaje de error si falla el backend -->
-        <p *ngIf="errorMensaje" style="color: red; margin-top: 8px;">
-          {{ errorMensaje }}
-        </p>
+      <!-- Mensaje de error si falla el backend -->
+      <div class="app-orokin-error backend-error" *ngIf="errorMensaje">
+        {{ errorMensaje }}
+      </div>
 
-      </mat-card-content>
-
-      <mat-card-actions>
-        <!-- 4. Cambiamos el botón a type="submit" dentro del <form> -->
-        <button mat-raised-button color="primary" type="submit">Ingresar</button>
-      </mat-card-actions>
+      <!-- 4. Botón de acceso (Deshabilitado si el form es inválido) -->
+      <button type="submit" class="app-orokin-btn" [disabled]="loginForm.invalid">
+        INGRESAR
+      </button>
 
     </form>
-  </mat-card>
+  </div>
 </div>
