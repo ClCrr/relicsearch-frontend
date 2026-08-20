@@ -30,8 +30,6 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>NOMBRE</th>
-            <th>DESCRIPCIÓN</th>
             <th class="actions-col">ACCIONES</th>
           </tr>
         </thead>
@@ -39,16 +37,7 @@
           <tr *ngFor="let reliquia of reliquias" class="tenno-row">
             <td class="id-cell">{{ reliquia.id }}</td>
             <td class="highlight-text">{{ reliquia.nombre }}</td>
-            
-            <!-- Corrección: Manejo seguro de la descripción usando ngIf -->
-            <td class="desc-cell">
-              <ng-container *ngIf="reliquia.descripcion; else sinDesc">
-                {{ reliquia.descripcion | slice:0:50 }}{{ reliquia.descripcion.length > 50 ? '...' : '' }}
-              </ng-container>
-              <!-- Texto por si la reliquia no tiene descripción -->
-              <ng-template #sinDesc>
-                <span style="opacity: 0.5;">Sin descripción</span>
-              </ng-template>
+       
             </td>
 
             <td class="actions-cell">
