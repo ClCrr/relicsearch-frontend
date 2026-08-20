@@ -1,17 +1,21 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 
 // RUTAS CORREGIDAS
 import { authInterceptor } from './core/services/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideAnimationsAsync(),
-    // Configuramos HttpClient para que use nuestro interceptor funcional
-    provideHttpClient(withInterceptors([authInterceptor]))
+  
+    
+    // 2. Agrega withFetch() dentro de provideHttpClient
+    provideHttpClient(
+      withFetch(), // <-- AGREGA ESTA LÍNEA
+      withInterceptors([authInterceptor]) // si tienes interceptores tipo función
+    )
   ]
 };

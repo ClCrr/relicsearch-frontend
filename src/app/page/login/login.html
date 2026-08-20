@@ -4,21 +4,46 @@
       <mat-card-title>Acceso al Sistema (SaaS AI)</mat-card-title>
     </mat-card-header>
     
-    <mat-card-content class="form-content">
-      <mat-form-field appearance="outline">
-        <mat-label>Correo electrónico</mat-label>
-        <input matInput placeholder="ejemplo@univo.edu">
-      </mat-form-field>
+    <!-- 1. Envolvemos el contenido en un tag <form> con [formGroup] -->
+    <form [formGroup]="loginForm" (ngSubmit)="ingresarSistema()">
+      
+      <mat-card-content class="form-content">
+        
+        <!-- Campo Correo -->
+        <mat-form-field appearance="outline">
+          <mat-label>Correo electrónico</mat-label>
+          <!-- 2. Agregamos formControlName="email" -->
+          <input matInput formControlName="email" type="email" placeholder="ejemplo@univo.edu">
+          <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+            El correo es obligatorio
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+            Ingresa un correo electrónico válido
+          </mat-error>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Contraseña</mat-label>
-        <input matInput type="password">
-      </mat-form-field>
-    </mat-card-content>
+        <!-- Campo Contraseña -->
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <!-- 3. Agregamos formControlName="password" -->
+          <input matInput formControlName="password" type="password">
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+            La contraseña es obligatoria
+          </mat-error>
+        </mat-form-field>
 
-    <mat-card-actions>
-      <!-- (click) ejecuta la función en nuestro archivo TypeScript -->
-      <button mat-raised-button color="primary" (click)="ingresarSistema()">Ingresar</button>
-    </mat-card-actions>
+        <!-- Mensaje de error si falla el backend -->
+        <p *ngIf="errorMensaje" style="color: red; margin-top: 8px;">
+          {{ errorMensaje }}
+        </p>
+
+      </mat-card-content>
+
+      <mat-card-actions>
+        <!-- 4. Cambiamos el botón a type="submit" dentro del <form> -->
+        <button mat-raised-button color="primary" type="submit">Ingresar</button>
+      </mat-card-actions>
+
+    </form>
   </mat-card>
 </div>
