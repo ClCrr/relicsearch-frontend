@@ -1,78 +1,126 @@
+/* =========================================
+   1. CONTENEDOR Y FONDO OROKIN
+========================================= */
 .app-orokin-container {
-  position: absolute; /* Esto lo libera de las restricciones de Angular */
+  position: fixed; /* Asegura que tome toda la pantalla */
   top: 0;
   left: 0;
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   
-  /* Fondo explícito */
-  background-color: #0a0a0a !important; 
-  background-image: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, rgba(10, 10, 10, 1) 70%) !important;
+  background-color: #050505 !important; 
+  /* Aumentamos la opacidad del brillo dorado central e incluimos un patrón geométrico sutil */
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.25) 0%, rgba(5, 5, 5, 1) 80%),
+    url('https://www.transparenttextures.com/patterns/cubes.png') !important;
   
-  /* Centrado Flexbox */
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  font-family: 'Rajdhani', sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  z-index: 1000; /* Asegura que se dibuje por encima de cualquier otra cosa */
+  z-index: 1000;
 }
 
-.orokin-card {
-  background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
-  border: 1px solid #D4AF37;
-  padding: 40px;
-  width: 100%;
+/* Forzamos la fuente en TODOS los elementos dentro del contenedor */
+.app-orokin-container, 
+.app-orokin-container * {
+  font-family: 'Rajdhani', sans-serif !important;
+}
+
+/* =========================================
+   2. TARJETA DE LOGIN (ESTILO PRIME)
+========================================= */
+.app-orokin-card {
+  background: linear-gradient(145deg, rgba(22, 22, 22, 0.95), rgba(13, 13, 13, 0.95));
+  border: 2px solid #D4AF37; /* Oro puro */
+  border-radius: 2px;
+  padding: 50px 40px;
+  width: 90%;
   max-width: 420px;
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15); /* Resplandor dorado sutil */
+  box-shadow: 0 0 35px rgba(212, 175, 55, 0.25); /* Resplandor dorado más fuerte */
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+/* Decoración angular sutil en las esquinas */
+.app-orokin-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25px;
+  height: 25px;
+  border-top: 3px solid #E5C558;
+  border-left: 3px solid #E5C558;
+}
+
+.app-orokin-title {
+  color: #E5C558; 
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 5px;
+  font-size: 30px;
+  text-align: center;
+  text-shadow: 0 0 15px rgba(229, 197, 88, 0.6);
+}
+
+.app-orokin-subtitle {
+  color: #c0c0c0;
+  font-size: 15px;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   text-align: center;
 }
 
-.orokin-input {
+/* =========================================
+   3. FORMULARIO E INPUTS
+========================================= */
+.app-orokin-form-group {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.app-orokin-input {
   width: 100%;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.03) !important;
   border: none;
-  border-bottom: 1px solid #D4AF37;
-  color: #F3F4F6;
-  padding: 10px 5px;
-  margin-bottom: 30px;
+  border-bottom: 2px solid #D4AF37 !important;
+  color: #ffffff !important;
+  padding: 12px 10px;
+  font-size: 17px;
+  font-weight: 600;
   outline: none;
-  font-size: 16px;
+  box-sizing: border-box;
   transition: all 0.3s ease;
+  letter-spacing: 1px;
 }
 
-/* Efecto de energía de Vacío al hacer clic */
-.orokin-input:focus {
-  border-bottom: 1px solid #00F0FF;
-  box-shadow: 0 4px 6px -6px #00F0FF;
+/* Efecto de energía de Vacío (Cian) al hacer foco */
+.app-orokin-input:focus {
+  border-bottom: 2px solid #00F0FF !important;
+  background: rgba(0, 240, 255, 0.08) !important;
+  box-shadow: 0 5px 15px -5px rgba(0, 240, 255, 0.4);
 }
 
-.orokin-btn {
-  background: linear-gradient(90deg, #D4AF37, #E5C558, #D4AF37);
-  color: #111111;
-  border: none;
-  padding: 14px 24px;
+.app-orokin-input::placeholder {
+  color: rgba(212, 175, 55, 0.6);
   text-transform: uppercase;
-  font-weight: bold;
-  letter-spacing: 3px;
-  cursor: pointer;
-  width: 100%;
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
-}
-
-.orokin-btn:hover {
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
-  transform: translateY(-2px);
-}
-
-/* Estilos para los mensajes de error de validación */
-.app-orokin-error {
-  color: #ff4c4c; /* Rojo brillante estilo alerta táctica */
   font-size: 13px;
-  margin-top: 5px;
+  font-weight: 500;
+}
+
+/* =========================================
+   4. MENSAJES DE ERROR
+========================================= */
+.app-orokin-error {
+  color: #ff4c4c;
+  font-size: 14px;
+  margin-top: 8px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -84,11 +132,36 @@
   text-shadow: 0 0 8px rgba(255, 76, 76, 0.4);
 }
 
-/* Efecto opaco cuando el botón está deshabilitado por el formGroup */
+/* =========================================
+   5. BOTÓN DE ACCIÓN
+========================================= */
+.app-orokin-btn {
+  background: linear-gradient(90deg, #D4AF37 0%, #E5C558 50%, #D4AF37 100%) !important;
+  color: #050505 !important;
+  border: none;
+  border-radius: 2px;
+  padding: 15px 30px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 3px;
+  font-size: 18px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+}
+
+.app-orokin-btn:hover:not(:disabled) {
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.8);
+  transform: translateY(-2px);
+}
+
 .app-orokin-btn:disabled {
-  background: #333 !important;
-  color: #666 !important;
+  background: rgba(50, 50, 50, 0.8) !important;
+  color: #888 !important;
   box-shadow: none;
   cursor: not-allowed;
   transform: none;
+  border: 1px solid #555;
 }
